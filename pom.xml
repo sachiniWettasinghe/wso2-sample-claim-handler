@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.custom.claim</groupId>
+    <artifactId>org.wso2.sample.claimhandler</artifactId>
+    <version>1.0</version>
+    <packaging>bundle</packaging>
+    <name>org.wso2.sample.claimHandler</name>
+    <url>http://maven.apache.org</url>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-scr-plugin</artifactId>
+                <version>1.22.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-scr-scrdescriptor</id>
+                        <goals>
+                            <goal>scr</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.4.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+                        <Bundle-Name>${pom.artifactId}</Bundle-Name>
+                        <Private-Package>
+                            org.wso2.custom.claim.internal
+                        </Private-Package>
+                        <Export-Package>
+                            !org.wso2.custom.claim.internal,
+                            org.wso2.custom.claim.*,
+                        </Export-Package>
+                        <Import-Package>
+                            org.osgi.framework; version="${osgi.framework.imp.pkg.version.range}",
+                            org.osgi.service.component;
+                            version="${osgi.service.component.imp.pkg.version.range}",
+
+                            org.wso2.carbon.identity.application.authentication.framework.*
+                            *;resolution:=optional
+                        </Import-Package>
+                        <DynamicImport-Package>*</DynamicImport-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.application.authentication.framework</artifactId>
+            <version>5.12.153</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.user.mgt</artifactId>
+            <version>5.12.153</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.charon</groupId>
+            <artifactId>org.wso2.charon3.core</artifactId>
+            <version>3.1.21</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.inbound.provisioning.scim2</groupId>
+            <artifactId>org.wso2.carbon.identity.scim2.common</artifactId>
+            <version>1.2.12</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2.releases</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2.snapshots</id>
+            <name>WSO2 Snapshot Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <properties>
+        <!--Carbon Identity Event Handler Account Lock Version-->
+        <identity.event.handler.account.lock.exp.pkg.version>${project.version}</identity.event.handler.account.lock.exp.pkg.version>
+
+        <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
+        <osgi.service.component.imp.pkg.version.range>[1.2.0, 2.0.0)</osgi.service.component.imp.pkg.version.range>
+        <commons-lang.wso2.osgi.version.range>[2.6.0,3.0.0)</commons-lang.wso2.osgi.version.range>
+        <commons-logging.osgi.version.range>[1.2,2.0)</commons-logging.osgi.version.range>
+
+        <!--Carbon Kernel Version-->
+        <carbon.kernel.version>4.4.5</carbon.kernel.version>
+        <carbon.kernel.package.import.version.range>[4.4.0, 5.0.0)</carbon.kernel.package.import.version.range>
+        <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
+
+        <!--Carbon Identity Framework Version-->
+        <carbon.identity.framework.version>5.7.0</carbon.identity.framework.version>
+        <carbon.identity.framework.imp.pkg.version.range>[5.7.0, 6.0.0)
+        </carbon.identity.framework.imp.pkg.version.range>
+
+
+        <!--Maven Plugin Version-->
+        <carbon.p2.plugin.version>1.5.3</carbon.p2.plugin.version>
+        <maven.compiler.plugin.version>2.3.1</maven.compiler.plugin.version>
+        <maven.scr.plugin.version>1.7.2</maven.scr.plugin.version>
+        <maven.bundle.plugin.version>2.4.0</maven.bundle.plugin.version>
+
+    </properties>
+
+</project>
